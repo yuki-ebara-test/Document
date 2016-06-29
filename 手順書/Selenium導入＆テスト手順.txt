@@ -1,0 +1,23 @@
+
+
+１．Sleniumのjarファイルをダウンロード
+http://www.seleniumhq.org/download/
+selenium-java-2.53.0.zipz
+
+２．ChromブラウザのWebDriverをダウンロード
+https://sites.google.com/a/chromium.org/chromedriver/downloads
+
+３．Javaのクラスパスに１で取得したjarファイルを設定
+
+４．ChromブラウザのWebDriverをシステムプロパティに設定
+	実行時に登録
+
+５．Sleniumを使用して、ケアリッツ画面のログイン、ログイン後の画面のスクショを取得
+
+６．Eclipse上からJunit4を利用して、テストケースの作成を行った。
+
+	・PageObjectパターンを使用
+	・ケース失敗時に画面のスクリーンショットを取得
+
+
+

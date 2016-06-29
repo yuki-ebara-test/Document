@@ -1,0 +1,35 @@
+
+
+１．Dockerターミナル起動
+docker-machine ssh default
+
+２．PHPUnitのイメージをダウンロード
+docker images
+
+docker pull phpunit/phpunit:5.4.0
+
+docker ps -a
+
+３．ローカルのフォルダをVM上のフォルダにマウント
+sudo mount -t vboxsf work_win /mnt/work_host/
+
+４．PHPのテストクラス（SampleTest.php）を作成し、work_winで指定しているフォルダ（D:\pleiades\workspace\Test1）に配置
+
+５．コンテナを起動し、PHPのテストクラスを指定
+docker run -it --rm --name php1 -v /mnt/work_host:/php_test -p 8000:8080 phpunit/phpunit:5.4.0 --help
+
+	５－１． work_win 配下のTestクラスを実行
+	docker run -it --rm --name php1 -v /mnt/work_host:/php_test -p 8000:8080 phpunit/phpunit:5.4.0 /php_test
+
+	５－２． work_win 配下のTestクラスを実行し、work_win/result配下にカバレッジを出力
+	docker run -it --rm --name php1 -v /mnt/work_host:/php_test -p 8000:8080 phpunit/phpunit:5.4.0 --coverage-html /php_test/result --whitelist /php_test /php_test
+
+	５－３． work_win 配下のTestクラスを実行し、work_win/result配下にある、YYを含むクラスのカバレッジを出力
+	docker run -it --rm --name php1 -v /mnt/work_host:/php_test -p 8000:8080 phpunit/phpunit:5.4.0 --coverage-html /php_test/result --whitelist /php_test --filter YY /php_test
+
+	５－４． work_win 配下のTestクラスを実行し、work_win/result配下にある、Sampleを含むクラスのカバレッジを出力
+	docker run -it --rm --name php1 -v /mnt/work_host:/php_test -p 8000:8080 phpunit/phpunit:5.4.0 --coverage-html /php_test/result --whitelist /php_test --filter Sample /php_test
+
+	※whitelist：コードカバレッジ対象のファイル
+６．実行結果を確認
+

@@ -1,0 +1,26 @@
+
+１．GitHUBにログインする。
+	https://github.com/
+	ユーザーID：yuki-ebara-test
+	パスワード：ebara0486
+
+２．組織を作成する。
+
+	組織名：IT-Skill
+	mail：ebara1979@hotmail.co.jp
+
+３．リポジトリを作成
+	中央リポジトリを作成。
+	リポジトリ名：seleniumTest
+
+４．中央リポジトリをForkして開発者個人用のリモートリポジトリを作成
+
+５．GitHUBのページからチェックアウト用URLを取得
+
+６．Eclipseからリモートリポジトリをクローン＆ローカルリポジトリを作成
+
+７．Eclipseのプロジェクトとしてインポート
+
+
+
+ki

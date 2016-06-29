@@ -1,0 +1,120 @@
+
+
+【Docker】
+
+１．Dockerのインストール手順
+
+	１．BIOSの仮想化支援機能をONにする。
+	
+	２．DockerToolboxをダウンロードする。
+	
+		https://www.docker.com/products/docker-toolbox
+		
+	３．DockerToolboxをインストールする。
+	
+	
+	４．PCを再起動する。
+	
+	５．コマンドプロンプトで以下を入力する。
+	
+		docker-machine.exe ssh default
+
+◆VMに接続する	docker-machine ssh default
+◆VMのIPを調べる	ifconfig
+
+◆イメージの確認：https://hub.docker.com/explore/
+
+◆イメージのダウンロード	docker pull tomcat:7
+◆イメージの確認	docker images
+◆イメージの削除	docker rmi java:8
+
+◆コンテナ一覧	docker ps -a
+◆コンテナ作成
+	docker run -it --name "app1" java:8
+	docker run -d --name "app1" -p 8081:8080 tomcat:7
+	// コンテナ側のフォルダがみれるよ
+	docker run -it --name "app1" -p 8081:8080 tomcat:7 /bin/bash
+
+	// ホスト側のフォルダをコンテナ側にマッピング
+	docker run -it --name "app1" -v /home/docker/:/usr/local/tomcat/webapps tomcat:7 /bin/bash
+
+◆コンテナ間でフォルダを共有
+	docker run -it --name "app1" -v /usr/local/tomcat/temp -v /home/docker/:/usr/local/tomcat/temp -p 8081:8080 tomcat:7 /bin/bash
+	docker run -it --name "app2" --volumes-from "app1" -p 8082:8080 tomcat:7  /bin/bash
+
+◆ブラウザからのアクセス
+http://192.168.99.100:8081/
+http://192.168.99.100:8082/
+
+
+
+◆コンテナ作成
+	docker run -d --name "app1" -p 8081:8080 -v /home/docker/temp:/usr/local/tomcat/logs tomcat:7
+	docker run -d --name "app1" -p 8081:8080 -v /home/docker/temp:/usr/local/tomcat/conf tomcat:7
+	docker run -d --name "app1" -p 8081:8080 -v /home/docker/temp:/usr/local/tomcat:ro tomcat:7
+	sudo docker run -d --name "app1" -p 8081:8080 -v /home/docker/conf:/usr/local/tomcat/conf tomcat:7
+	sudo docker run -i -t -v /home/docker/conf:/usr/local/tomcat/webapps --name "app1" tomcat:7
+	
+	docker run -it --name "app1" -v /home/docker/tom:/usr/local/tomcat tomcat:7 /bin/bash
+	
+	
+◆コンテナ起動	docker start ※コンテナID
+◆コンテナ停止	docker stop ※コンテナID
+◆コンテナ削除	docker rm -f ※コンテナ識別子
+				docker rm -f app1
+◆起動中のコンテナに接続	docker attach ※コンテナID
+							docker exec -it app1 /bin/bash
+
+◆コンテナ上のTomcat起動	catalina.sh run
+◆コンテナのlog確認	docker logs -t app1
+	
+◆コンテナからホストにファイルコピー	
+	docker cp コンテナID:/usr/local/apache2/conf/httpd.conf Documents/docker/httpd/
+	
+	docker cp b9cb3e55aaac:/usr/local/tomcat/bin/bootstrap.jar /home/docker/
+	docker cp app1:/usr/local/tomcat/bin /home/docker/temp
+	docker cp app1:/usr/local/tomcat/conf /home/docker/temp
+	// ホスト側のdocker配下にconfフォルダをコピーする
+	docker cp app1:/usr/local/tomcat/conf /home/docker
+	
+◆コンテナの情報を表示	docker inspect app1
+◆イメージとの差分	docker diff app1
+
+
+◆ホスト側にフォルダ作成
+	mkdir -m +w temp
+	mkdir -m +w conf
+	mkdir -m +w tom
+	rm -rf conf
+	rm -rf temp
+
+★★★★★Windowsで開発したファイルをコンテナ上のTomcatに配置する手順
+
+
+// WindowsからVirtualBoxアプリにて共有フォルダを設定
+※VirtualBoxのGUIで実施
+work_winという共有名を指定
+
+
+// VMホストにログイン
+docker-machine ssh default
+// ホストにWindowsと共有するフォルダを作成
+sudo mkdir -m +w /mnt/work_host
+
+// ホストで共有フォルダをマウント
+sudo mount -t vboxsf work_win /mnt/work_host/
+
+// ホストでマウントした共有フォルダをコンテナで共有指定（/usr/local/tomcat/app）
+docker run -it --name app1 -v /mnt/work_host:/usr/local/tomcat/app -v /usr/local/tomcat/app -p 8081:8080 tomcat:7 /bin/bash
+
+
+// 共有フォルダの解除
+sudo umount -t vboxsf /mnt/work_host/
+sudo rm -rf /mnt/dev_work_host
+
+
+
+◆tomcatからファイルをコピー
+docker cp app1:/usr/local/tomcat/lib/servlet-api.jar /mnt/work_host/
+docker cp app1:/usr/local/tomcat/conf /mnt/work_host/
+

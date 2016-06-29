@@ -1,0 +1,27 @@
+
+１．Gitのインストール
+
+	msysGit
+	http://www.symfony.gr.jp/git/setup-git-windows
+	※画面キャプチャ有
+
+１．GitHUBのアカウントを登録する。
+	https://github.com/
+
+	※画面キャプチャ有
+
+２．アクセス認証用SSH-Keyの作成
+
+	１．GitBash起動
+	２．ssh-keygen -t rsa -C"ebara1979@hotmail.co.jp"
+	３．パスフレーズを入力
+	４．作成した鍵の確認
+
+３．GitHUBに公開鍵を登録
+
+
+
+
+
+
+
