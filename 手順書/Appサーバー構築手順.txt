@@ -5,6 +5,9 @@
 ※VirtualBoxのGUIで実施
 eclipse_webApp1という共有名を指定
 
+共有名：tmp_server
+実体：D:\pleiades\workspace\webApp_dev\tmp\server
+
 
 // VMホストにログイン
 docker-machine ssh default
@@ -29,11 +32,12 @@ docker cp app1:/usr/local/tomcat/lib/servlet-api.jar /mnt/work_host/
 docker cp app1:/usr/local/tomcat/conf/server.xml /mnt/work_host/1
 
 ２.server.xmlにコンテキストルート等の記載を追加
+※eclipseの作業フォルダを指定
 
 		<Context path="/webApp1" docBase="/usr/local/tomcat/webapps/webApp1" workDir="/usr/local/tomcat/webapps/webApp1/work" reloadable="true"/>
 
-３．Tomcatにファイルをコピー
-docker cp /mnt/work_host/conf/server.xml app1:/usr/local/tomcat/conf 
+３．Tomcatにファイルを上書きコピー
+docker cp /mnt/work_host/conf/server.xml app1:/usr/local/tomcat/conf
 
 ４．Tomcat再起動
 docker stop app1

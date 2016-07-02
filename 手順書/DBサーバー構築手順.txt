@@ -1,0 +1,26 @@
+
+
+===================事前作業
+
+// VMホストにログイン
+docker-machine ssh default
+
+// MySqlのイメージを取得
+https://hub.docker.com/explore/
+docker pull mysql:5.7
+docker images
+
+// MySqlサーバーの起動
+docker rm -f db1
+docker run -d --name db1 -p 3306:3306 -e MYSQL_DATABASE=test_db -e MYSQL_USER=test_user -e MYSQL_PASSWORD=test_user -e MYSQL_ROOT_PASSWORD=admin mysql:5.7
+
+// MySqlサーバーのコンソールにアクセス
+docker exec -it db1 bash
+docker logs db1
+
+// DB作成
+mysql CREATE DATABASE TEST_DB
+mysql GRANT ALL ON TEST_DB.* to ADMIN@localhost;
+mysql FLUSH PRIVILEGES;
+
+//
