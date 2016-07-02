@@ -3,7 +3,7 @@
 
 // WindowsからVirtualBoxアプリにて共有フォルダを設定
 ※VirtualBoxのGUIで実施
-eclipse_webApp1という共有名を指定
+webApp_devという共有名を指定
 
 共有名：tmp_server
 実体：D:\pleiades\workspace\webApp_dev\tmp\server
@@ -11,33 +11,35 @@ eclipse_webApp1という共有名を指定
 
 // VMホストにログイン
 docker-machine ssh default
+
 // ホストにWindowsと共有するフォルダを作成
-sudo mkdir -m +w /mnt/eclipse_webApp1
+sudo mkdir -m +w /mnt/webApp_dev
 
 // ホストで共有フォルダをマウント
-sudo mount -t vboxsf eclipse_webApp1 /mnt/eclipse_webApp1/
+sudo mount -t vboxsf webApp_dev /mnt/webApp_dev/
 
-// ホストでマウントした共有フォルダをコンテナで共有指定（/mnt/eclipse_webApp1 ⇔ /usr/local/tomcat/webapps/webApp1）
-docker run -it --name app1 -v /mnt/eclipse_webApp1:/usr/local/tomcat/webapps/webApp1 -p 8081:8080 tomcat:7 /bin/bash
-
+// ホストでマウントした共有フォルダをコンテナで共有指定（/mnt/webApp_dev ⇔ /usr/local/tomcat/webapps/webApp1）
+docker run -it --name app1 -v /mnt/webApp_dev:/usr/local/tomcat/webapps/webApp1 -p 8081:8080 tomcat:7 /bin/bash
 
 // 共有フォルダの解除
 sudo umount -t vboxsf /mnt/work_host/
 sudo rm -rf /mnt/dev_work_host
 
 
-
 １.Tomcatからファイルをコピー
 docker cp app1:/usr/local/tomcat/lib/servlet-api.jar /mnt/work_host/
-docker cp app1:/usr/local/tomcat/conf/server.xml /mnt/work_host/1
+docker cp app1:/usr/local/tomcat/conf/server.xml /mnt/webApp_dev/tmp/from_server
 
 ２.server.xmlにコンテキストルート等の記載を追加
 ※eclipseの作業フォルダを指定
+	<Host ...>
 
 		<Context path="/webApp1" docBase="/usr/local/tomcat/webapps/webApp1" workDir="/usr/local/tomcat/webapps/webApp1/work" reloadable="true"/>
 
+	</Host>
+
 ３．Tomcatにファイルを上書きコピー
-docker cp /mnt/work_host/conf/server.xml app1:/usr/local/tomcat/conf
+docker cp /mnt/webApp_dev/tmp/from_server/server.xml app1:/usr/local/tomcat/conf
 
 ４．Tomcat再起動
 docker stop app1
@@ -57,7 +59,7 @@ catalina.sh run
 
 ８．ブラウザにて確認
 
-http://192.168.99.100:8081/webApp1/index.html
+http://192.168.99.100:8081/webApp1/view/index.html
 
 
 
