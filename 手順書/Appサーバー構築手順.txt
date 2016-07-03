@@ -22,8 +22,8 @@ sudo mount -t vboxsf webApp_dev /mnt/webApp_dev/
 docker run -it --name app1 -v /mnt/webApp_dev:/usr/local/tomcat/webapps/webApp1 -p 8081:8080 tomcat:7 /bin/bash
 
 // 共有フォルダの解除
-sudo umount -t vboxsf /mnt/work_host/
-sudo rm -rf /mnt/dev_work_host
+sudo umount -t vboxsf /mnt/webApp_dev/
+sudo rm -rf /mnt/webApp_dev
 
 
 １.Tomcatからファイルをコピー
@@ -50,7 +50,7 @@ docker logs -t app1
 
 ６．Tomcatを起動
 docker exec -it app1 /bin/bash
-ls bin
+cd bin
 shutdown.sh
 catalina.sh run
 
