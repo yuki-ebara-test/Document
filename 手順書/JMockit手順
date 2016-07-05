@@ -1,0 +1,6 @@
+
+
+// プロジェクトのビルドパスに指定したjmockit-1.8.jarをJunitより先に読み込むようにする
+
+// テスト実行時のVM引数に指定する
+-javaagent:C:\Users\Dev\.m2\repository\org\jmockit\jmockit\1.8\jmockit-1.8.jar

@@ -1,0 +1,7 @@
+
+
+// pom.xmlで指定したjarファイルをEclipseのクラスパスに通す
+pom.xmlのフォルダにコマンドプロンプトにて移動し、以下のコマンドを指定
+
+mvn eclipse:eclipse
+
